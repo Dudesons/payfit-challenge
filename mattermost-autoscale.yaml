@@ -1,0 +1,12 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: mattermost
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: mattermost
+  minReplicas: 3
+  maxReplicas: 6
+  targetCPUUtilizationPercentage: 70

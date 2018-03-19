@@ -1,0 +1,56 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mattermost
+  labels:
+    app: mattermost
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 100%
+  selector:
+    matchLabels:
+      app: mattermost
+  template:
+    metadata:
+      name: mattermost
+      labels:
+        app: mattermost
+    spec:
+      containers:
+      - name: mattermost
+        image: mattermost/mattermost-prod-app:4.8.0
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "0.5"
+        ports:
+          - name: mattermost-port
+            containerPort: 80
+#        livenessProbe:
+#          httpGet:
+#            path: /system/ping
+#            port: mattermost-port
+#          initialDelaySeconds: 10
+#          periodSeconds: 15
+#          successThreshold: 1
+##          successThreshold: 5
+#          failureThreshold: 3
+        env:
+        - name: DB_HOST
+          value: postgres
+        - name: DB_PORT
+          value: "5432"
+        - name: MM_USERNAME
+          value: postgres
+        - name: MM_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysecret
+              key: mattermost_db_password
+        - name: MM_DBNAME
+          value: mattermost
