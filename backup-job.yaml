@@ -1,0 +1,34 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: pg-backup
+  labels:
+    app: pg-backup
+spec:
+  schedule: "*/15 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: pg-backup
+            image: postgres:10.3-alpine
+            command:
+              - pg_dump
+            args:
+              - -h
+              - postgres
+              - -U
+              - backup
+              - mattermost
+              - -f
+              - mattermost.sql
+              - -Z
+              - "9"
+            env:
+              - name: PGPASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: mysecret
+                    key: backup_db_password
+          restartPolicy: OnFailure
