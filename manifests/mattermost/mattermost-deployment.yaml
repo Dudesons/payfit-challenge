@@ -26,7 +26,6 @@ spec:
         image: mattermost/mattermost-prod-app:4.8.0
         resources:
           limits:
-            memory: "256Mi"
             cpu: "0.5"
         ports:
           - name: mattermost-port

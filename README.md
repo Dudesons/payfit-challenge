@@ -17,6 +17,7 @@ deploy-backup - Deploy the backup job on a specific environeent (ENV parameter i
 gen-kube-secret - Generate a base64 string for kubernetes secret (SECRET parameter is required)
 secrets - Deploy secrets (ENV parameter is required)
 get-pods - Get all pods from a specific environment (ENV parameter is required)
+clean - Clean an environment (ENV parameter is required)
 ```
 
 In the follwing document variables:
@@ -73,4 +74,14 @@ make get-pods ENV=<KUBERNETES_NAMEPACE>
 Gen a password for Kubernetes secret system
 ```bash
 make gen-kube-secret SECRET=<PLAIN_TEXT_SECRET>
+```
+
+Get the mattermost endpoint
+```bash
+make get-endpoint ENV=<KUBERNETES_NAMEPACE>
+```
+
+Clean an environment
+```bash
+make clean ENV=<KUBERNETES_NAMEPACE>
 ```
